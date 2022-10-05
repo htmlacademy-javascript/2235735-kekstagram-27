@@ -15,14 +15,14 @@ function getRandom(startNum, endNum){
   if (startNum === endNum){
     return startNum;
   }
-  return startNum > endNum ? getRandomInteger(startNum, endNum) : getRandomInteger(endNum, startNum);
+  return startNum > endNum ? getRandomInteger(endNum, startNum) : getRandomInteger(startNum, endNum);
 }
 
 function getRandomInteger(startNum, endNum){
   return (Math.round(Math.random() * (endNum - startNum)) + startNum);
 }
 
-getRandom(1, 5);
+getRandom(10, 50);
 // Функция для проверки максимальной длины строки.
 
 // имя_функции(проверяемая_строка, максимальная_длина);

@@ -1,3 +1,35 @@
+const MESSAGES = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+];
+
+const USERS = [
+  'User1',
+  'User2',
+  'User3',
+  'User4',
+  'User5',
+  'User6',
+  'User7'
+];
+
+const USER_COMMENT_ID_MAX = 1000;
+const USER_COMMENT_ID_MIN = 1;
+const USER_AVATAR_SRC_MAX = 6;
+const USER_AVATAR_SRC_MIN = 1;
+const OBJECT_LIKES_COUNT_MAX = 200;
+const OBJECT_LIKES_COUNT_MIN = 15;
+const OBJECT_COMMENT_COUNT_MAX = 2;
+const OBJECT_COMMENT_COUNT_MIN = 1;
+const OBJECT_COUNT = 25;
+
+const objects = [];
+
+
 /*Задание 2.18. Нужно больше функций
 
  Функция, возвращает случайное целое число из переданного диапазона включительно. Пример использования функции:
@@ -63,32 +95,11 @@ checkStringLength('',40);
     - name, случайное имя
 */
 
-const MESSAGES = [
-  'Всё отлично!',
-  'В целом всё неплохо. Но не всё.',
-  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-];
-
-const USERS = [
-  'User1',
-  'User2',
-  'User3',
-  'User4',
-  'User5',
-  'User6',
-  'User7'
-];
-
-const objects = [];
-
-const getRandomArrayElement = (elements) => elements[getRandom(0, elements.length - 1)];
+const getRandomArrayElement = (array) => array[getRandom(0, array.length - 1)];
 
 const createUserComment = () => ({
-  id: getRandom(1, 1000),
-  avatar: `img/avatar-${getRandom(1, 6)}.svg`,
+  id: getRandom(USER_COMMENT_ID_MIN, USER_COMMENT_ID_MAX),
+  avatar: `img/avatar-${getRandom(USER_AVATAR_SRC_MIN, USER_AVATAR_SRC_MAX)}.svg`,
   message: getRandomArrayElement(MESSAGES),
   name: getRandomArrayElement(USERS)
 });
@@ -97,11 +108,11 @@ const createObject = (index) => ({
   id: index,
   url: `photos/${index}.jpg`,
   description: 'Кекстаграм Фото',
-  likes: getRandom(15, 200),
-  comments: Array.from({ length: getRandom(1, 2) }, createUserComment)
+  likes: getRandom(OBJECT_LIKES_COUNT_MIN, OBJECT_LIKES_COUNT_MAX),
+  comments: Array.from({ length: getRandom(OBJECT_COMMENT_COUNT_MIN, OBJECT_COMMENT_COUNT_MAX) }, createUserComment)
 });
 
-for (let i = 1; i <= 25; i++){
+for (let i = 1; i <= OBJECT_COUNT; i++){
   objects.push(createObject(i));
 }
 

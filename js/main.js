@@ -1,4 +1,5 @@
 import {createObjectList} from './data.js';
+import {drawImg} from './drawImg.js';
 
-// eslint-disable-next-line no-console
-console.log(createObjectList());
+const IMG_SECTION = document.querySelector('.pictures');
+drawImg(createObjectList(),IMG_SECTION);

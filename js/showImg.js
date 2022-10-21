@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 const popup = document.querySelector('.big-picture');
 const img = popup.querySelector('img');
 const likesCount = popup.querySelector('.likes-count');
@@ -39,15 +38,13 @@ const closePopup = ()=>{
   });
 };
 
-// eslint-disable-next-line no-unused-vars
-const showPopup = ({id, url, description, likes, comments})=>{
+const showPopup = ({url, description, likes, comments})=>{
   img.src = url;
   likesCount.textContent = likes;
   commentsCount.textContent = comments.length;
   imgDescription.textContent = description;
   const commentFragment = document.createDocumentFragment();
-  // eslint-disable-next-line no-unused-vars
-  comments.forEach(({avatar, id, message, name})=>{
+  comments.forEach(({avatar, message, name})=>{
     const commentTemplate = socialCommentsContainer.querySelector('.social__comment').cloneNode(true);
     commentTemplate.querySelector('img').src = avatar;
     commentTemplate.querySelector('img').alt = name;

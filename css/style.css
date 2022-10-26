@@ -366,7 +366,13 @@ main {
   outline: auto 5px highlight;
 }
 
-
+.form__error {
+  display: block;
+  font-size: 0.8em;
+  color: rgb(255, 255, 255);
+  text-transform: none;
+  font-weight: normal;
+}
 /* Окно для редактирования изображения
    ========================================================================== */
 

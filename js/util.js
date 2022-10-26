@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 function getRandom(startNum, endNum){
   if(startNum < 0 || endNum < 0) {
     return NaN;
@@ -16,7 +17,6 @@ function getRandomInteger(startNum, endNum){
 
 const getRandomArrayElement = (array) => array[getRandom(0, array.length - 1)];
 
-// eslint-disable-next-line no-unused-vars
 function checkStringLength(string, maxLength){
   return String(string).length <= Number(maxLength);
 }
@@ -27,8 +27,6 @@ function createRandomIdFromRangeGenerator (min, max) {
   return function () {
     let currentValue = getRandom(min, max);
     if (previousValues.length >= (max - min + 1)) {
-      // eslint-disable-next-line no-console
-      console.error(`Перебраны все числа из диапазона от ${ min } до ${ max}`);
       return null;
     }
     while (previousValues.includes(currentValue)) {
@@ -39,6 +37,12 @@ function createRandomIdFromRangeGenerator (min, max) {
   };
 }
 
+function toggleElementClass (element, className){
+  element.classList.toggle(className);
+}
 
-export {getRandomArrayElement, getRandom,createRandomIdFromRangeGenerator};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+
+export {getRandomArrayElement, getRandom,createRandomIdFromRangeGenerator, toggleElementClass, isEscapeKey, checkStringLength};
 

@@ -1,5 +1,14 @@
 import { toggleElementClass, isEscapeKey, checkStringLength } from './util.js';
 
+const HASH_TAG_RULES = [
+  'хеш-тег не может состоять только из одной решётки;',
+  'максимальная длина одного хэш-тега 20 символов, включая решётку;',
+  'хэш-теги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом;',
+  'хэш-теги разделяются пробелами;',
+  'один и тот же хэш-тег не может быть использован дважды;',
+  'нельзя указать больше пяти хэш-тегов;'
+];
+
 const form = document.querySelector('.img-upload__form');
 const formFile = form.querySelector('#upload-file');
 const formPopup = form.querySelector('.img-upload__overlay ');
@@ -71,15 +80,15 @@ function validateHashTag(value){
   if(checkStringLength(value, 0)){
     return true;
   }
-  const hashtags = value.trim().toLowerCase().split(' ');
-  if (hashtags.length > 5){
+  const hashTags = value.trim().toLowerCase().split(' ');
+  if (hashTags.length > 5){
     return false;
   }
-  const uniqueHashTag = new Set(hashtags);
-  if (uniqueHashTag.size !== hashtags.length){
+  const uniqueHashTag = new Set(hashTags);
+  if (uniqueHashTag.size !== hashTags.length){
     return false;
   }
-  const trueOrFalse = hashtags.map((element)=>hashTagRegExp.test(element));
+  const trueOrFalse = hashTags.map((element)=>hashTagRegExp.test(element));
   return !trueOrFalse.includes(false);
 }
 
@@ -90,17 +99,7 @@ pristine.addValidator(
 );
 
 
-const hashTagError = ()=>{
-  const hashTagRules = [
-    'хеш-тег не может состоять только из одной решётки;',
-    'максимальная длина одного хэш-тега 20 символов, включая решётку;',
-    'хэш-теги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом;',
-    'хэш-теги разделяются пробелами;',
-    'один и тот же хэш-тег не может быть использован дважды;',
-    'нельзя указать больше пяти хэш-тегов;'
-  ];
-  return hashTagRules.join('<br>');
-};
+const hashTagError = ()=>HASH_TAG_RULES.join('<br>');
 
 
 pristine.addValidator(

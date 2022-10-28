@@ -1,5 +1,15 @@
 import { toggleElementClass, isEscapeKey, checkStringLength } from './util.js';
 
+const HASHTAG_RULES = [
+  'хеш-тег не может состоять только из одной решётки;',
+  'максимальная длина одного хэш-тега 20 символов, включая решётку;',
+  'хэш-теги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом;',
+  'хэш-теги разделяются пробелами;',
+  'один и тот же хэш-тег не может быть использован дважды;',
+  'нельзя указать больше пяти хэш-тегов;'
+];
+const HASHTAG_COUNT_MAX = 5;
+
 const form = document.querySelector('.img-upload__form');
 const formFile = form.querySelector('#upload-file');
 const formPopup = form.querySelector('.img-upload__overlay ');
@@ -21,7 +31,6 @@ function onPopupEscKeydown(evt) {
   }
 }
 
-
 function changeElementClass() {
   toggleElementClass(formPopup, 'hidden');
   toggleElementClass(document.body, 'modal-open');
@@ -35,7 +44,6 @@ function closePopup() {
   form.removeEventListener('submit', formValidate);
   form.reset();
 }
-
 
 function openPopup() {
   changeElementClass();
@@ -52,7 +60,6 @@ const pristine = new Pristine(form,{
   errorTextTag: 'span',
   errorTextClass: 'form__error'
 }, false);
-
 
 function formValidate (evt){
   const isValid = pristine.validate();
@@ -71,15 +78,15 @@ function validateHashTag(value){
   if(checkStringLength(value, 0)){
     return true;
   }
-  const hashtags = value.trim().toLowerCase().split(' ');
-  if (hashtags.length > 5){
+  const hashTags = value.trim().toLowerCase().split(' ');
+  if (hashTags.length > HASHTAG_COUNT_MAX){
     return false;
   }
-  const uniqueHashTag = new Set(hashtags);
-  if (uniqueHashTag.size !== hashtags.length){
+  const uniqueHashTag = new Set(hashTags);
+  if (uniqueHashTag.size !== hashTags.length){
     return false;
   }
-  const trueOrFalse = hashtags.map((element)=>hashTagRegExp.test(element));
+  const trueOrFalse = hashTags.map((element)=>hashTagRegExp.test(element));
   return !trueOrFalse.includes(false);
 }
 
@@ -89,19 +96,7 @@ pristine.addValidator(
   'Длина поля с комментариями - до 140 символов'
 );
 
-
-const hashTagError = ()=>{
-  const hashTagRules = [
-    'хеш-тег не может состоять только из одной решётки;',
-    'максимальная длина одного хэш-тега 20 символов, включая решётку;',
-    'хэш-теги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом;',
-    'хэш-теги разделяются пробелами;',
-    'один и тот же хэш-тег не может быть использован дважды;',
-    'нельзя указать больше пяти хэш-тегов;'
-  ];
-  return hashTagRules.join('<br>');
-};
-
+const hashTagError = ()=>HASHTAG_RULES.join('<br>');
 
 pristine.addValidator(
   form.querySelector('.text__hashtags'),
@@ -109,11 +104,9 @@ pristine.addValidator(
   hashTagError
 );
 
-
 const uploadImg = ()=>{
   formFile.addEventListener('change', openPopup);
   form.addEventListener('submit', formValidate);
 };
-
 
 export {uploadImg};

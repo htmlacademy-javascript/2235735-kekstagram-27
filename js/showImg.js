@@ -1,21 +1,22 @@
 import {toggleElementClass, isEscapeKey} from './util.js';
 
+const DEFAULT_COMMENTS_VISIBLE = 5;
+
 const popup = document.querySelector('.big-picture');
 const img = popup.querySelector('img');
 const likesCount = popup.querySelector('.likes-count');
 const commentsCount = popup.querySelector('.comments-count');
-const socialCommentsCount = popup.querySelector('.social__comment-count');
+const commentsCountVisible = popup.querySelector('.comments-count-visible');
 const socialCommentsContainer = popup.querySelector('.social__comments');
-const commentsLoader = popup.querySelector('.comments-loader');
+const loadCommentsBtn = popup.querySelector('.comments-loader');
 const imgDescription = popup.querySelector('.social__caption');
 const closePopupBtn = popup.querySelector('.big-picture__cancel');
-
+const commentTemplate = document.querySelector('#comment').content.querySelector('li');
+const commentFragment = document.createDocumentFragment();
 
 function changeElementClass() {
   toggleElementClass(document.body, 'modal-open');
   toggleElementClass(popup, 'hidden');
-  toggleElementClass(socialCommentsCount, 'hidden');
-  toggleElementClass(commentsLoader, 'hidden');
 }
 
 function onPopupEscKeydown(evt) {
@@ -31,9 +32,12 @@ function onPopupClick() {
 
 function closePopup () {
   changeElementClass();
+  loadCommentsBtn.classList.remove('hidden');
+  socialCommentsContainer.innerHTML = '';
 
   document.removeEventListener('keydown', onPopupEscKeydown);
   closePopupBtn.removeEventListener('click', onPopupClick);
+  loadCommentsBtn.removeEventListener('click', onLoaderClick);
 }
 
 function openPopup () {
@@ -41,6 +45,19 @@ function openPopup () {
 
   document.addEventListener('keydown', onPopupEscKeydown);
   closePopupBtn.addEventListener('click',onPopupClick);
+  loadCommentsBtn.addEventListener('click', onLoaderClick);
+}
+
+function onLoaderClick(){
+  const hiddenComments = socialCommentsContainer.querySelectorAll('.hidden');
+  for (let i = 0; i <= DEFAULT_COMMENTS_VISIBLE - 1; i++){
+    hiddenComments[i].classList.remove('hidden');
+    commentsCountVisible.textContent++;
+    if(hiddenComments[i] === hiddenComments[hiddenComments.length - 1]){
+      loadCommentsBtn.classList.add('hidden');
+      break;
+    }
+  }
 }
 
 const createPopup = ({url, description, likes, comments})=>{
@@ -48,19 +65,21 @@ const createPopup = ({url, description, likes, comments})=>{
   likesCount.textContent = likes;
   commentsCount.textContent = comments.length;
   imgDescription.textContent = description;
-  const commentFragment = document.createDocumentFragment();
-  comments.forEach(({avatar, message, name})=>{
-    const commentTemplate = socialCommentsContainer.querySelector('.social__comment').cloneNode(true);
-    commentTemplate.querySelector('img').src = avatar;
-    commentTemplate.querySelector('img').alt = name;
-    commentTemplate.querySelector('p').textContent = message;
-    commentFragment.append(commentTemplate);
+  commentsCountVisible.textContent = DEFAULT_COMMENTS_VISIBLE;
+  comments.forEach(({avatar, message, name}, index)=>{
+    const comment = commentTemplate.cloneNode(true);
+    if (index > DEFAULT_COMMENTS_VISIBLE - 1){
+      comment.classList.add('hidden');
+    }
+    comment.querySelector('img').src = avatar;
+    comment.querySelector('img').alt = name;
+    comment.querySelector('p').textContent = message;
+    commentFragment.append(comment);
   });
   socialCommentsContainer.innerHTML = '';
   socialCommentsContainer.append(commentFragment);
   openPopup();
 };
-
 
 const getImgProperties = (imgList, targetImgURL)=>{
   for (let i = 0; i < imgList.length; i++){

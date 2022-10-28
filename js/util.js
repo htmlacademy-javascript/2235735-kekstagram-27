@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 function getRandom(startNum, endNum){
   if(startNum < 0 || endNum < 0) {
     return NaN;
@@ -42,7 +41,6 @@ function toggleElementClass (element, className){
 }
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
-
 
 export {getRandomArrayElement, getRandom,createRandomIdFromRangeGenerator, toggleElementClass, isEscapeKey, checkStringLength};
 

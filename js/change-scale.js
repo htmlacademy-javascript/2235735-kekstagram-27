@@ -5,7 +5,7 @@ const SCALE_PARAMETERS = {
 };
 
 const form = document.querySelector('.img-upload__form');
-const imgPreview = form.querySelector('.img-upload__preview');
+const imgPreview = form.querySelector('.img-upload__preview').querySelector('img');
 const smallerScaleBtn = form.querySelector('.scale__control--smaller');
 const biggerScaleBtn = form.querySelector('.scale__control--bigger');
 const scaleCurrent = form.querySelector('.scale__control--value');

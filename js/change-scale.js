@@ -12,31 +12,41 @@ const scaleCurrent = form.querySelector('.scale__control--value');
 
 let scaleTarget;
 
-const onSmallerClick = ()=>{
-  scaleTarget = getScaleDigitalValue() - SCALE_PARAMETERS.step;
-  if (scaleTarget >= SCALE_PARAMETERS.min){
-    modifyScale(scaleTarget);
-  }
+const getScaleDigitalValue = ()=>{
+  const symbols = scaleCurrent.value.split('%');
+  return +symbols[0];
 };
 
-const onBiggerClick = ()=>{
+const modifyScale = (value)=>{
+  scaleCurrent.value = `${value}%`;
+  imgPreview.style.transform = `scale(${value / 100})`;
+};
+
+const increaseScale = ()=>{
   scaleTarget = getScaleDigitalValue() + SCALE_PARAMETERS.step;
   if (scaleTarget <= SCALE_PARAMETERS.max){
     modifyScale(scaleTarget);
   }
 };
 
-function getScaleDigitalValue(){
-  const symbols = scaleCurrent.value.split('%');
-  return +symbols[0];
-}
+const decreaseScale = ()=>{
+  scaleTarget = getScaleDigitalValue() - SCALE_PARAMETERS.step;
+  if (scaleTarget >= SCALE_PARAMETERS.min){
+    modifyScale(scaleTarget);
+  }
+};
 
-function modifyScale(value){
-  scaleCurrent.value = `${value}%`;
-  imgPreview.style.transform = `scale(${value / 100})`;
-}
+const onSmallerClick = ()=>{
+  decreaseScale();
+};
+
+const onBiggerClick = ()=>{
+  increaseScale();
+};
+
 
 const removeScaleHandlers = ()=>{
+  modifyScale(SCALE_PARAMETERS.max);
   smallerScaleBtn.removeEventListener('click', onSmallerClick );
   biggerScaleBtn.removeEventListener('click', onBiggerClick);
 };

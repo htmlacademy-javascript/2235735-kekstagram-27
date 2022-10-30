@@ -1,6 +1,6 @@
 import { toggleElementClass, isEscapeKey, checkStringLength } from './util.js';
 import { changeScale, removeScaleHandlers } from './change-scale.js';
-import { changeEffect, removeEffectHandlers } from './change-effect.js';
+import { changeEffect, removeEffectHandlers, createSlider, destroySlider } from './change-effect.js';
 
 const HASHTAG_RULES = [
   'хеш-тег не может состоять только из одной решётки;',
@@ -47,6 +47,7 @@ function closePopup() {
   form.reset();
   removeScaleHandlers();
   removeEffectHandlers();
+  destroySlider();
 }
 
 function openPopup() {
@@ -56,6 +57,7 @@ function openPopup() {
   closeFormBtn.addEventListener('click', onPopupClick);
   changeScale();
   changeEffect();
+  createSlider();
 }
 
 const pristine = new Pristine(form,{

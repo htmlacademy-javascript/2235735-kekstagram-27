@@ -40,34 +40,14 @@ const SLIDER_FILTERS = {
 const form = document.querySelector('.img-upload__form');
 const imgPreview = form.querySelector('.img-upload__preview').querySelector('img');
 const effectList = form.querySelector('.effects__list');
-
-const sliderElement = document.querySelector('.effect-level__slider');
-const valueElement = document.querySelector('.effect-level__value');
-
-
-let classClicked;
-
-const changeClass = (effect)=>{
-  const targetClass = `effects__preview--${effect}`;
-  imgPreview.classList.forEach((e)=>imgPreview.classList.remove(e));
-  imgPreview.classList.add(targetClass);
-  showOrHideSlider(effect);
-  if (effect !== 'none'){
-    updateSlider(SLIDER_FILTERS[effect].min, SLIDER_FILTERS[effect].max, SLIDER_FILTERS[effect].step);
-  }
-};
+const slider = document.querySelector('.effect-level__slider');
+const effectValue = document.querySelector('.effect-level__value');
 
 
-const showOrHideSlider = (effect)=>{
-  if (effect === 'none'){
-    hideSlider();
-  }else if(sliderElement.classList.contains('hidden') && effect !== 'none'){
-    showSlider();
-  }
-};
+let classTarget;
 
 const updateSlider = (min, max, step )=>{
-  sliderElement.noUiSlider.updateOptions({
+  slider.noUiSlider.updateOptions({
     range: {
       min: min,
       max: max,
@@ -89,37 +69,58 @@ const updateSlider = (min, max, step )=>{
   });
 };
 
-
-const onEffectClick = (evt)=>{
-  const classes = evt.target.id.split('-');
-  classClicked = classes[1];
-  changeClass(classClicked);
+const hideSlider = () =>{
+  imgPreview.style.filter = 'none';
+  slider.classList.add('hidden');
+  slider.noUiSlider.off('update');
 };
 
-const removeEffectHandlers = ()=>{
-  effectList.removeEventListener('change', onEffectClick);
+const changeImgFilter = (value)=>{
+  imgPreview.style.filter = `${SLIDER_FILTERS[classTarget].name}(${value}${SLIDER_FILTERS[classTarget].ext})`;
+
 };
 
-const changeEffect = ()=>{
+
+const changeImgClass = (effect)=>{
+  const targetClass = `effects__preview--${effect}`;
   imgPreview.classList.forEach((e)=>imgPreview.classList.remove(e));
-  imgPreview.classList.add('effects__preview--none');
-  hideSlider();
+  imgPreview.classList.add(targetClass);
+  showOrHideSlider(effect);
 
-  effectList.addEventListener('change', onEffectClick);
-};
-
-const changeCSSStyle = (value)=>{
-  if(classClicked === 'none' || classClicked === undefined){
-    imgPreview.style.filter = 'none';
-  }else {
-    imgPreview.style.filter = `${SLIDER_FILTERS[classClicked].name}(${value}${SLIDER_FILTERS[classClicked].ext})`;
-
+  if (effect !== 'none'){
+    updateSlider(SLIDER_FILTERS[effect].min, SLIDER_FILTERS[effect].max, SLIDER_FILTERS[effect].step);
   }
 };
 
-const createSlider = ()=>{
+const onEffectClick = (evt)=>{
+  const classes = evt.target.id.split('-');
+  classTarget = classes[1];
+  changeImgClass(classTarget);
+};
 
-  noUiSlider.create(sliderElement, {
+
+const destroySlider = ()=>{
+  imgPreview.style.filter = 'none';
+  slider.noUiSlider.destroy();
+};
+
+const showSlider = () =>{
+  slider.classList.remove('hidden');
+  slider.noUiSlider.on('update', () => {
+    effectValue.value = slider.noUiSlider.get();
+    changeImgFilter(slider.noUiSlider.get());
+  });
+};
+function showOrHideSlider(effect) {
+  if (effect === 'none') {
+    hideSlider();
+  } else if (slider.classList.contains('hidden') && effect !== 'none') {
+    showSlider();
+  }
+}
+
+const createSlider = ()=>{
+  noUiSlider.create(slider, {
     range: {
       min: 0,
       max: 1,
@@ -128,26 +129,20 @@ const createSlider = ()=>{
     step: 0.1,
     connect: 'lower',
   });
-
-  sliderElement.noUiSlider.on('update', () => {
-    valueElement.value = sliderElement.noUiSlider.get();
-    changeCSSStyle(sliderElement.noUiSlider.get());
-  });
 };
 
+const changeEffect = ()=>{
+  imgPreview.classList.forEach((e)=>imgPreview.classList.remove(e));
+  imgPreview.classList.add('effects__preview--none');
+  createSlider();
+  hideSlider();
 
-const destroySlider = ()=>{
-  imgPreview.style.filter = 'none';
-  sliderElement.noUiSlider.destroy();
+  effectList.addEventListener('change', onEffectClick);
 };
 
-const hideSlider = () =>{
-  imgPreview.style.filter = 'none';
-  sliderElement.classList.add('hidden');
+const removeEffectHandlers = ()=>{
+  effectList.removeEventListener('change', onEffectClick);
+  destroySlider();
 };
 
-const showSlider = () =>{
-  sliderElement.classList.remove('hidden');
-};
-
-export {changeEffect, removeEffectHandlers, createSlider, destroySlider};
+export {changeEffect, removeEffectHandlers};

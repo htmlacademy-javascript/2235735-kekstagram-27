@@ -1,9 +1,9 @@
 
-const getImgUrl = 'https://27.javascript.pages.academy/kekstagram/data';
-const sendImgUrl = 'https://27.javascript.pages.academy/kekstagram';
+const GET_IMG_URL = 'https://27.javascript.pages.academy/kekstagram/data';
+const SEND_IMG_URL = 'https://27.javascript.pages.academy/kekstagram';
 
 const getImg = (onSuccess, onFail)=>{
-  fetch(getImgUrl)
+  fetch(GET_IMG_URL)
     .then((response)=> response.json())
     .then((imgFromServer)=>{
       onSuccess(imgFromServer);
@@ -12,7 +12,7 @@ const getImg = (onSuccess, onFail)=>{
 };
 
 const sendImg = (onSuccess, onFail, body)=>{
-  fetch(sendImgUrl,
+  fetch(SEND_IMG_URL,
     {
       method: 'POST',
       body

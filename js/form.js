@@ -2,6 +2,7 @@ import { toggleElementClass, isEscapeKey, checkStringLength } from './util.js';
 import { changeScale, removeScaleHandlers } from './change-scale.js';
 import { changeEffect, removeEffectHandlers } from './change-effect.js';
 import { sendImg } from './api.js';
+import { previewImg } from './previewImg.js';
 
 const HASHTAG_RULES = [
   'хеш-тег не может состоять только из одной решётки;',
@@ -99,6 +100,10 @@ function closePopup() {
   form.reset();
   removeScaleHandlers();
   removeEffectHandlers();
+  const pristineMessages = document.querySelectorAll('.pristine-error');
+  if (pristineMessages){
+    pristineMessages.forEach((element)=>{element.textContent = '';});
+  }
 }
 
 function openPopup() {
@@ -109,6 +114,7 @@ function openPopup() {
   form.addEventListener('submit', formValidate);
   changeScale();
   changeEffect();
+  previewImg();
 }
 
 const pristine = new Pristine(form,{

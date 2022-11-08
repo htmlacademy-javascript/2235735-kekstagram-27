@@ -1,5 +1,5 @@
 import {drawImg} from './drawImg.js';
-import {createRandomIdFromRangeGenerator} from './util.js';
+import {createRandomIdFromRangeGenerator, debounce} from './util.js';
 
 const imgFilter = document.querySelector('.img-filters');
 const defaultBtn = document.querySelector('#filter-default');
@@ -10,14 +10,6 @@ const IMG_SECTION = document.querySelector('.pictures');
 function deleteActiveClass (){
   const filterBtns = document.querySelectorAll('.img-filters__button');
   filterBtns.forEach((element)=>element.classList.remove('img-filters__button--active'));
-}
-
-function debounce (callback, timeoutDelay = 500) {
-  let timeoutId;
-  return (...rest) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
-  };
 }
 
 function randomClick(cb, imgList) {
@@ -31,15 +23,15 @@ function randomClick(cb, imgList) {
   });
 }
 
-function defaultClick (imgList){
+function defaultClick (cb, imgList){
   defaultBtn.addEventListener('click', (evt)=>{
     deleteActiveClass();
     evt.target.classList.add('img-filters__button--active');
-    drawImg(imgList, IMG_SECTION);
+    cb(imgList, IMG_SECTION);
   });
 }
 
-function popularClick (imgList){
+function popularClick (cb, imgList){
   popularBtn.addEventListener('click', (evt)=>{
     deleteActiveClass();
     evt.target.classList.add('img-filters__button--active');
@@ -49,7 +41,7 @@ function popularClick (imgList){
       return countB - countA;
     };
     const popularImgList = imgList.slice().sort(compareComments);
-    drawImg(popularImgList, IMG_SECTION);
+    cb(popularImgList, IMG_SECTION);
   });
 }
 
@@ -57,11 +49,11 @@ function popularClick (imgList){
 const showFilter = (imgList)=>{
   imgFilter.classList.remove('img-filters--inactive');
 
-  defaultClick(imgList);
+  defaultClick(debounce(drawImg),imgList);
 
   randomClick(debounce(drawImg), imgList);
 
-  popularClick (imgList);
+  popularClick (debounce(drawImg), imgList);
 
 };
 

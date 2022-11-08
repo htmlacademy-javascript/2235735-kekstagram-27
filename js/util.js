@@ -42,5 +42,13 @@ function toggleElementClass (element, className){
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomArrayElement, getRandom,createRandomIdFromRangeGenerator, toggleElementClass, isEscapeKey, checkStringLength};
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {getRandomArrayElement, getRandom,createRandomIdFromRangeGenerator, toggleElementClass, isEscapeKey, checkStringLength, debounce};
 

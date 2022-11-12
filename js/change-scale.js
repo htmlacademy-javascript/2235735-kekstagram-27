@@ -1,7 +1,7 @@
-const SCALE_PARAMETERS = {
-  step: 25,
-  max: 100,
-  min: 25
+const ScaleParameters = {
+  STEP: 25,
+  MAX: 100,
+  MIN: 25
 };
 
 const form = document.querySelector('.img-upload__form');
@@ -23,15 +23,15 @@ const modifyScale = (value)=>{
 };
 
 const increaseScale = ()=>{
-  scaleTarget = getScaleDigitalValue() + SCALE_PARAMETERS.step;
-  if (scaleTarget <= SCALE_PARAMETERS.max){
+  scaleTarget = getScaleDigitalValue() + ScaleParameters.STEP;
+  if (scaleTarget <= ScaleParameters.MAX){
     modifyScale(scaleTarget);
   }
 };
 
 const decreaseScale = ()=>{
-  scaleTarget = getScaleDigitalValue() - SCALE_PARAMETERS.step;
-  if (scaleTarget >= SCALE_PARAMETERS.min){
+  scaleTarget = getScaleDigitalValue() - ScaleParameters.STEP;
+  if (scaleTarget >= ScaleParameters.MIN){
     modifyScale(scaleTarget);
   }
 };
@@ -46,13 +46,13 @@ const onBiggerClick = ()=>{
 
 
 const removeScaleHandlers = ()=>{
-  modifyScale(SCALE_PARAMETERS.max);
+  modifyScale(ScaleParameters.MAX);
   smallerScaleBtn.removeEventListener('click', onSmallerClick );
   biggerScaleBtn.removeEventListener('click', onBiggerClick);
 };
 
 const changeScale = ()=>{
-  scaleCurrent.value = `${SCALE_PARAMETERS.max}%`;
+  scaleCurrent.value = `${ScaleParameters.MAX}%`;
   smallerScaleBtn.addEventListener('click', onSmallerClick);
   biggerScaleBtn.addEventListener('click', onBiggerClick);
 };

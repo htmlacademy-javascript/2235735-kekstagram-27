@@ -1,4 +1,6 @@
-function getRandom(startNum, endNum){
+const getRandomInteger = (startNum, endNum)=>Math.round(Math.random() * (endNum - startNum)) + startNum;
+
+const getRandom = (startNum, endNum) =>{
   if(startNum < 0 || endNum < 0) {
     return NaN;
   }
@@ -8,21 +10,12 @@ function getRandom(startNum, endNum){
     return startNum;
   }
   return startNum > endNum ? getRandomInteger(endNum, startNum) : getRandomInteger(startNum, endNum);
-}
+};
 
-function getRandomInteger(startNum, endNum){
-  return (Math.round(Math.random() * (endNum - startNum)) + startNum);
-}
+const checkStringLength = (string, maxLength)=>String(string).length <= Number(maxLength);
 
-const getRandomArrayElement = (array) => array[getRandom(0, array.length - 1)];
-
-function checkStringLength(string, maxLength){
-  return String(string).length <= Number(maxLength);
-}
-
-function createRandomIdFromRangeGenerator (min, max) {
+const createRandomIdFromRangeGenerator = (min, max)=>{
   const previousValues = [];
-
   return function () {
     let currentValue = getRandom(min, max);
     if (previousValues.length >= (max - min + 1)) {
@@ -34,21 +27,21 @@ function createRandomIdFromRangeGenerator (min, max) {
     previousValues.push(currentValue);
     return currentValue;
   };
-}
+};
 
-function toggleElementClass (element, className){
+const toggleElementClass = (element, className)=>{
   element.classList.toggle(className);
-}
+};
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-function debounce (callback, timeoutDelay = 500) {
+const debounce = (callback, timeoutDelay = 500)=> {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
-export {getRandomArrayElement, getRandom,createRandomIdFromRangeGenerator, toggleElementClass, isEscapeKey, checkStringLength, debounce};
+export {createRandomIdFromRangeGenerator, toggleElementClass, isEscapeKey, checkStringLength, debounce};
 

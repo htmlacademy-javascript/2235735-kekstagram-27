@@ -1,7 +1,8 @@
 const imgTemplate = document.querySelector('#picture').content.querySelector('a');
 const imgFragment = document.createDocumentFragment();
+const imgContainer = document.querySelector('.pictures');
 
-const drawImg = (imgList, imgContainer)=>{
+const renderPhotos = (imgList)=>{
   imgList.forEach(({url, likes, comments}) => {
     const img = imgTemplate.cloneNode(true);
     img.querySelector('img').src = url;
@@ -13,4 +14,4 @@ const drawImg = (imgList, imgContainer)=>{
   imgContainer.appendChild(imgFragment);
 };
 
-export {drawImg};
+export {renderPhotos};

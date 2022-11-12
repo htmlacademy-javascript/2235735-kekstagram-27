@@ -1,15 +1,14 @@
-import {drawImg} from './drawImg.js';
-import {showBigImg} from './showImg.js';
-import {uploadImg, showMessage} from './form.js';
-import {getImg} from './api.js';
-import {showFilter} from './filterImg.js';
+import {renderPhotos} from './render-photos.js';
+import {showPhoto} from './show-photo.js';
+import {showForm} from './show-form.js';
+import {getData} from './api.js';
+import {showFilter} from './show-filter.js';
+import {showMessage} from './show-message.js';
 
-const IMG_SECTION = document.querySelector('.pictures');
-
-getImg((IMG_LIST)=>{
-  drawImg(IMG_LIST,IMG_SECTION);
-  showBigImg(IMG_LIST, IMG_SECTION);
-  showFilter(IMG_LIST);
-},()=>{showMessage('error');} );
-uploadImg();
+getData((photos)=>{
+  renderPhotos(photos);
+  showPhoto(photos);
+  showFilter(photos);
+},()=>{showMessage('error', 'Сервер временно не доступен');} );
+showForm();
 

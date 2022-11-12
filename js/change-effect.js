@@ -40,8 +40,8 @@ const SLIDER_FILTERS = {
 const form = document.querySelector('.img-upload__form');
 const imgPreview = form.querySelector('.img-upload__preview').querySelector('img');
 const effectList = form.querySelector('.effects__list');
-const slider = document.querySelector('.effect-level__slider');
-const effectValue = document.querySelector('.effect-level__value');
+const slider = form.querySelector('.effect-level__slider');
+const effectValue = form.querySelector('.effect-level__value');
 
 
 let classTarget;
@@ -49,10 +49,10 @@ let classTarget;
 const updateSlider = (min, max, step )=>{
   slider.noUiSlider.updateOptions({
     range: {
-      min: min,
-      max: max,
+      min,
+      max,
     },
-    step: step,
+    step,
     start: max,
     connect: 'lower',
     format: {
